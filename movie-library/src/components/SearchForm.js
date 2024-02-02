@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import Card from "./Card"
+import Card from "./Card";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 function SearchForm({ search }) {
@@ -36,14 +36,13 @@ function SearchForm({ search }) {
           <button type="submit">Search</button>
         </form>
       </div>
-      {/* <div className="poster">
-            <img src={searchResults.Poster} alt={searchResults.Title} />
-            <h3>{searchResults.Title}</h3>
-            <p>Genre: {searchResults.Genre}</p>
-            <p>{searchResults.Year}</p>
-        </div> */}
       <div className="">
-        <Card/>
+        <Card
+          Poster={searchResults.Poster}
+          Title={searchResults.Title}
+          Genre={searchResults.Genre}
+          year={searchResults.Year}
+        />
       </div>
     </div>
   );
