@@ -5,3 +5,12 @@
 .App-link {
   color: #61dafb;
 }
+
+.card{
+  margin: auto;
+  padding: auto;
+}
+
+.card-img-top{
+  height: 300px;
+}
