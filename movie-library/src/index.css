@@ -11,3 +11,12 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+/* typewriter effect */
+.text{
+  display: inline-block;
+  overflow: hidden;
+  white-space: nowrap;
+  letter-spacing: 2px;
+  animation: typing 3s steps(30, end), blink-caret .5s step-end infinite;
+}

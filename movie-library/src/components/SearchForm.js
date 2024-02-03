@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import Card from "./Card";
 import "bootstrap/dist/css/bootstrap.min.css";
+import Typewriter from "typewriter-effect";
 
 function SearchForm({ search }) {
   const [searchText, setSearchText] = useState("");
@@ -46,7 +47,6 @@ function SearchForm({ search }) {
 
         // Reload the page to reflect the updated data
         window.location.reload();
-        
       } else {
         console.log("Data already exists in localStorage. Skipping...");
       }
@@ -86,22 +86,36 @@ function SearchForm({ search }) {
 
   return (
     <div>
-      <div className="p-5">
+      <div className="m-5">
         <h1>Movie Library</h1>
+        <div className="text">
+          <Typewriter
+            options={{
+              autoStart: true,
+              loop: true,
+              delay: 40,
+              strings: ["Enjoy New Movies!", "Find the movies that you like!"],
+            }}
+          />
+        </div>
         <div>
           <form onSubmit={handleSubmit}>
             <input
               type="text"
+              className="form-control"
+              placeholder="Search for a movie..."
               value={searchText}
               onChange={(e) => setSearchText(e.target.value)}
             />
-            <button type="submit">Search</button>
+            <button className="btn btn-primary m-2" type="submit">
+              Search
+            </button>
           </form>
         </div>
       </div>
       <div className="">
         {searchResults && Object.keys(searchResults).length > 0 && (
-          <div className="">
+          <div className="mb-3">
             <Card
               Poster={searchResults.Poster}
               Title={searchResults.Title}
@@ -113,12 +127,12 @@ function SearchForm({ search }) {
           </div>
         )}
       </div>
-      <div className="p-5">
+      <div className="p-5 favourites">
         <h2>Favourites</h2>
-        <div className="row row-cols-auto">
+        <div className="row ">
           {localStorage.getItem("searchResults") &&
             JSON.parse(localStorage.getItem("searchResults")).map((result) => (
-              <div className="col">
+              <div className="col col-sm-12 col-md-6 col-lg-4">
                 <div key={result.imdbID}>
                   <Card
                     Poster={result.Poster}
