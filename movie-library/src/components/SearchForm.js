@@ -20,29 +20,118 @@ function SearchForm({ search }) {
     }
   };
 
-  //   const saveToLocalStorage = (items) => {
-  //     localStorage.setItem("searchResults", JSON.stringify(items));
-  //   };
+  const saveToLocalStorage = (item) => {
+    try {
+      // Retrieve existing data from localStorage
+      const savedResults = localStorage.getItem("searchResults");
+
+      // Parse the existing data or initialize an empty array if there's no data
+      const existingResults = savedResults ? JSON.parse(savedResults) : [];
+
+      // Ensure existingResults is an array or convert it to an array
+      const resultsArray = Array.isArray(existingResults)
+        ? existingResults
+        : [existingResults];
+
+      // Check if the item already exists in the existing data
+      const isDuplicate = resultsArray.some(
+        (result) => result.imdbID === item.imdbID
+      );
+
+      // If it's not a duplicate, add the item to the existing data and save it to localStorage
+      if (!isDuplicate) {
+        const updatedResults = [...resultsArray, item];
+        localStorage.setItem("searchResults", JSON.stringify(updatedResults));
+        console.log("Data saved to localStorage:", updatedResults);
+
+        // Reload the page to reflect the updated data
+        window.location.reload();
+        
+      } else {
+        console.log("Data already exists in localStorage. Skipping...");
+      }
+    } catch (error) {
+      console.error("Error saving to localStorage:", error);
+    }
+  };
+
+  const removeFromLocalStorage = (item) => {
+    try {
+      // Retrieve existing data from localStorage
+      const savedResults = localStorage.getItem("searchResults");
+
+      // Parse the existing data or initialize an empty array if there's no data
+      const existingResults = savedResults ? JSON.parse(savedResults) : [];
+
+      // Ensure existingResults is an array or convert it to an array
+      const resultsArray = Array.isArray(existingResults)
+        ? existingResults
+        : [existingResults];
+
+      // Filter out the item to be removed
+      const updatedResults = resultsArray.filter(
+        (result) => result.imdbID !== item.imdbID
+      );
+
+      // Reload the page to reflect the updated data
+      window.location.reload();
+
+      // Save the updated data to localStorage
+      localStorage.setItem("searchResults", JSON.stringify(updatedResults));
+      console.log("Data removed from localStorage:", updatedResults);
+    } catch (error) {
+      console.error("Error removing from localStorage:", error);
+    }
+  };
 
   return (
     <div>
-      <div>
-        <form onSubmit={handleSubmit}>
-          <input
-            type="text"
-            value={searchText}
-            onChange={(e) => setSearchText(e.target.value)}
-          />
-          <button type="submit">Search</button>
-        </form>
+      <div className="p-5">
+        <h1>Movie Library</h1>
+        <div>
+          <form onSubmit={handleSubmit}>
+            <input
+              type="text"
+              value={searchText}
+              onChange={(e) => setSearchText(e.target.value)}
+            />
+            <button type="submit">Search</button>
+          </form>
+        </div>
       </div>
       <div className="">
-        <Card
-          Poster={searchResults.Poster}
-          Title={searchResults.Title}
-          Genre={searchResults.Genre}
-          year={searchResults.Year}
-        />
+        {searchResults && Object.keys(searchResults).length > 0 && (
+          <div className="">
+            <Card
+              Poster={searchResults.Poster}
+              Title={searchResults.Title}
+              Genre={`Genre: ${searchResults.Genre}`}
+              year={searchResults.Year}
+              buttonText="Add to Favourites"
+              onClick={() => saveToLocalStorage(searchResults)}
+            />
+          </div>
+        )}
+      </div>
+      <div className="p-5">
+        <h2>Favourites</h2>
+        <div className="row row-cols-auto">
+          {localStorage.getItem("searchResults") &&
+            JSON.parse(localStorage.getItem("searchResults")).map((result) => (
+              <div className="col">
+                <div key={result.imdbID}>
+                  <Card
+                    Poster={result.Poster}
+                    Title={result.Title}
+                    Genre={`Genre: ${result.Genre}`}
+                    year={result.Year}
+                    buttonText="Remove from Favourites"
+                    onClick={() => removeFromLocalStorage(result)}
+                  />
+                </div>
+              </div>
+            ))}
+        </div>
       </div>
     </div>
   );

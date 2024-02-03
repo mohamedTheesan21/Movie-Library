@@ -6,11 +6,11 @@ function Card(props){
           <img src={props.Poster} className="card-img-top" alt="..."></img>
           <div className="card-body">
             <h5 className="card-title">{props.Title}</h5>
-            <p>Genre: {props.Genre}</p>
+            <p>{props.Genre}</p>
             <p>{props.Year}</p>
-            <a href="#" className="btn btn-primary">
-              Go somewhere
-            </a>
+            <button onClick={props.onClick} className="btn btn-primary">
+              {props.buttonText}
+            </button>
           </div>
         </div>
     )
